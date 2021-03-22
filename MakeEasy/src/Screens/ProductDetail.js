@@ -34,14 +34,18 @@ class ProductDetail extends Component {
   deleteItem = () => {
     this.props.deleteItem(this.props.route.params.item);
   };
+  capitalize=(str)=>{
+    return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
-  componentDidMount() {
-    let colors = data.color.filter(item => (
-      item.productid == this.props.route.params.item.id
-    ))
-    this.setState({ colors })
-    // console.log('colorsss', colors, this.props.route.params.item.id)
-  }
+    getIngredients=(id)=>{
+      let name= data.ingredients.find((cat)=>(
+        cat.productid==id
+      ))
+      // console.log('category nameeee', name)
+      return name.ingredientsname;
+    }
+
 
   render() {
     const {
@@ -51,11 +55,16 @@ class ProductDetail extends Component {
       price,
       bgcolor,
       id,
-      type
+      type,
+      isFav,
+      Rating
     } = this.props.route.params.item;
 
     const flag = this.props.cart?.items.filter((val) => val.id == id);
     const quantity = flag.length !== 0 ? flag[0].quantity : 0;
+
+    const ingredients=this.getIngredients(id)
+    // console.log('ingredianes', ingredients, id)
 
     return (
       <Wrapper top={0} bottom={0} style={{backgroundColor: bgcolor}}>
@@ -64,74 +73,76 @@ class ProductDetail extends Component {
           bounces={false}
           showsVerticalScrollIndicator={false}>
           <View>
-        <TouchableWithoutFeedback onPress={() => Navigator.goBack()}>
-          <View style={styles.backIcon}>
-            <Icon name="chevron-back" color="black" size={30} />
-          </View>
-        </TouchableWithoutFeedback>
+          <View style={{flexDirection:'row',padding: metrics.defaultMargin, justifyContent:'space-between', alignItems:'center'}}>
+              <TouchableWithoutFeedback onPress={() => Navigator.goBack()}>
+                <View style={[styles.backIcon]}>
+                  <Icon name="chevron-back" color={colors.primary} size={30} />
+                </View>
+              </TouchableWithoutFeedback>
+              <View style={{flexDirection:'row', alignItems:'center', }}>
+                <Text style={{fontSize:25, marginRight:5}}>{Rating}</Text>
+                  <Icon
+                    name={'star'}
+                    style={{
+                      fontSize: 30,
+                      color: colors.primary,
+                    }}
+                  />
+
+              </View>
+
+            </View>
          <Text style={styles.nameHeading}>{name}</Text>
-         <Text style={styles.prodtype}>Type: {type}</Text>
         <View style={styles.imageView}>
           <Image style={styles.image} source={image} />
         </View>
         <View style={{paddingHorizontal: metrics.defaultMargin, marginTop:metrics.defaultMargin}}>
+
+        <Text style={styles.smallHeading}>Ingredients:</Text>
+          {ingredients.split('\n').map(steps=>{
+            return(
+              <View style={{flexDirection:'row'}} >
+              <View style={{paddingTop:2, paddingRight:5}}>
+                <Text style={{fontSize:9, color: colors.primary}} >{'\u2B24'}</Text>
+              </View>
+              <Text style={styles.text}>{this.capitalize(steps)}</Text>
+              </View>
+            );
+          })}
          
-          <Text style={styles.smallHeading}>Product Description:</Text>
-          <Text style={styles.text}>{description}</Text>
+          <Text style={styles.smallHeading}>Receipe:</Text>
+          {description.split('\n').map(steps=>{
+            return(
+              <View style={{flexDirection:'row'}} >
+              <View style={{paddingTop:2, paddingRight:5}}>
+                <Text style={{fontSize:9, color: colors.primary}} >{'\u2B24'}</Text>
+              </View>
+              <Text style={styles.text}>{this.capitalize(steps)}</Text>
+              </View>
+            );
+          })}
           
-          <Text style={styles.smallHeading}>Colors:</Text>
-          <View style={styles.colorContainer}>
-            {
-              this.state.colors.map(list => (
-                <View style={[styles.colorPatch, { backgroundColor: list.color }]}></View>
-              ))
-            }
-          </View>
+          
           <View style={{
             flexDirection:'row',
             justifyContent:'space-between',
             alignItems:'center'
           }}>
-            <View>
-              <Text style={[styles.smallHeading,{margin:0}]}>
-                Price: ${price}
-              </Text>
-            </View>
-            <View style={styles.quantityView}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={this.deleteItem}
-                style={styles.iconView}>
-                <Icon name="remove" style={{...styles.icon}} />
-              </TouchableOpacity>
-              <Text style={styles.quantity}>{quantity}</Text>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={this.addItem}
-                style={styles.iconView}>
-                <Icon name="add" style={styles.icon} />
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
             
               <View style={{flexDirection:'row', margin: metrics.defaultMargin, borderRadius:3}}>
+                
                 <TouchableWithoutFeedback
-                onPress={() =>
-                  Navigator.goBack()
-                }>
-                <View style={[styles.btn,{backgroundColor:'white'}]}>
-                    <Text style={[styles.btnText,{color:colors.primary}]}>Go Back</Text>
-                  </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback
-                onPress={() =>
+                onPress={() =>{
+                  this.addItem()
                   Navigator.navigate('Checkout', {
                     item: this.props.route.params.item,
                   })
+                }
                 }>
                 <View style={[styles.btn,{backgroundColor:colors.primary}]}>
-                  <Text style={[styles.btnText,{color:'white'}]} > Add To Cart</Text>
+                  <Text style={[styles.btnText,{color:'white'}]} > Add To Cook Book</Text>
                 </View>
                 </TouchableWithoutFeedback>
               </View>
@@ -161,11 +172,12 @@ const styles = StyleSheet.create({
     marginLeft: metrics.defaultMargin,
     color: 'black',
     fontWeight:'bold',
-    marginBottom:metrics.smallMargin
+    marginBottom:metrics.smallMargin,
+    textAlign:'center'
   },
   smallHeading: {
     fontFamily: fonts.primaryBold,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight:'bold',
     marginTop: metrics.defaultMargin,
     marginBottom:metrics.smallMargin
@@ -180,15 +192,17 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: fonts.primary,
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 20,
     marginBottom: metrics.defaultMargin,
     color: colors.grey,
+    textTransform:'capitalize'
   },
   imageView: {
-    marginTop: metrics.largeMargin,
+    // marginTop: metrics.largeMargin,
     width: metrics.width,
     height: 300,
+    // backgroundColor:'red'
     // justifyContent: 'flex-end',
   },
   buttonView: {
@@ -206,16 +220,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primaryBold,
   },
   backIcon: {
-    // position: 'absolute',
-    // top: metrics.defaultMargin,
-    // left: metrics.defaultMargin,
-    backgroundColor: 'transparent',
-    // width: 50,
-    // height: 50,
-    padding: metrics.defaultMargin,
-    borderRadius: 10,
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    color: colors.primary
   },
 
   quantityView: {
@@ -272,6 +277,7 @@ const styles = StyleSheet.create({
   },
   btn:{
     flex:1,
+    borderRadius:10,
     backgroundColor:'red',
     marginTop:metrics.defaultMargin,
     // shadowColor: "#000",
@@ -299,6 +305,8 @@ const styles = StyleSheet.create({
     paddingVertical:metrics.smallMargin,
     fontFamily: fonts.secondaryBold,
     fontSize: 18,
+    fontWeight:'bold',
+
   },
 });
 

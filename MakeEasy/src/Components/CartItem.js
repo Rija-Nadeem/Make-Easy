@@ -22,7 +22,7 @@ export default class CartItem extends Component {
             <Text numberOfLines={2} style={styles.title}>
               {name}
             </Text>
-            <Text style={styles.price}>${price}</Text>
+            {/* <Text style={styles.price}>${price}</Text> */}
           </View>
         </View>
         <View style={styles.quantityView}>

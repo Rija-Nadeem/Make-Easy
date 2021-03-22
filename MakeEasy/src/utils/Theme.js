@@ -1,13 +1,15 @@
 import {Dimensions, Platform} from 'react-native';
 
 export const colors = {
-  primary: '#22c7b8',
+  primary: '#d4116f',
+  primaryLight:'rgba(212, 17, 124,0.5)',
   secondary: '#fbfbfd',
   background: '#fbfbfd',
   button: '#22c7b8',
   darkBackground: '#fbfbfd',
   lightBackground: '#fbfbfd',
   grey: '#a3a3a3',
+  lightGrey:'#e6e1e3',
 };
 
 const width = Dimensions.get('window').width;

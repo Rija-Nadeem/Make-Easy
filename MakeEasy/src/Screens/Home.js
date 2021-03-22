@@ -66,11 +66,11 @@ class Home extends Component {
           showsVerticalScrollIndicator={false}>
           <View style={styles.headingContainer}>
             <Text style={styles.heading}>
-             Headset
+             Make Easy
             </Text>
             <Icon
               onPress={() => Navigator.navigate('Checkout')}
-              name="cart"
+              name="book"
               style={styles.icon}
             />
           </View>
@@ -93,8 +93,7 @@ class Home extends Component {
 
           <HorizontalList
            style={{paddingTop:5}}
-            horizontal={false}
-            numColumns={2}
+           
             data={this.state.items}
             renderItem={({ item }) => (
               <FoodCard item={item} />
@@ -102,11 +101,8 @@ class Home extends Component {
           />
 
 
-          <Text style={styles.subHeading}>Recommended</Text>
+        <Text style={styles.subHeading}>Popular</Text>
           <HorizontalList
-          //  style={{paddingTop:5}}
-           horizontal={false}
-           numColumns={2}
             data={this.state.recommended}
             renderItem={({ item }) => <ItemCard item={item} />}
           />
@@ -114,9 +110,6 @@ class Home extends Component {
             <>
               <Text style={styles.subHeading}>Favourites</Text>
               <HorizontalList
-              //  style={{paddingTop:5}}
-               horizontal={false}
-               numColumns={2}
                 data={this.props.favProducts}
                 renderItem={({ item }) => <ItemCard item={item} />}
               />
@@ -182,7 +175,7 @@ const styles = StyleSheet.create({
     // right: metrics.defaultMargin,
     // top: metrics.defaultMargin,
     fontSize: 32,
-    color: colors.grey,
+    color: colors.primary,
   },
 });
 

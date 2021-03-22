@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 
-import {CartItem, Header, Input, Wrapper} from '../Components';
+import {CartItem, FoodCard, Header, Input, ItemCard, Wrapper} from '../Components';
 import {colors, fonts, metrics} from '../utils/Theme';
 import {SafeAreaInsetsContext} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -124,11 +124,11 @@ this.setState({
   render() {
     return (
       <Wrapper bottom={0}>
-        <Header textStyle={{fontWeight:'bold'}} title="Checkout" />
+        <Header textStyle={{fontWeight:'bold'}} title="Cook Book" />
 
         <OrderPlaced
-          // visible={this.state.visible}
-          visible={true}
+          visible={this.state.visible}
+          // visible={true}
           onPress={() => {
             this.setState({visible: false});
             this.props.emptyCart();
@@ -145,237 +145,30 @@ this.setState({
                 // backgroundColor:'red'
               }}>
               {this.props.cart.items.map((item) => (
-                <CartItem
+                <ItemCard
+                  noFav={true}
                   item={item}
                   quantity={item.quantity}
                   onAdd={() => this.props.addItem(item)}
                   onMinus={() => this.props.deleteItem(item)}
+                  style={{marginHorizontal: metrics.defaultMargin, width: metrics.width * 0.90, marginBottom: metrics.defaultMargin}}
                 />
               ))}
-              {/* <View style={styles.info}>
-                <Text style={styles.title}>Payment Mode</Text>
-                <Text style={styles.text}>Payment on Delivery</Text>
-              </View>
-              <View style={styles.info}>
-                <Text style={styles.title}>Total Price</Text>
-                <Text style={[styles.text, {fontWeight:'bold'}]}>
-                  $ {parseInt(this.props.cart.totalPrice) * this.state.quantity}
-                </Text>
-              </View> */}
               
-              <View style={styles.infoContainer}>
-              {/* <Text style={[styles.heading, {fontSize: 24, fontWeight:'bold'}]}>
-                Customer Details
-              </Text> */}
-              <Text style={[styles.text, {margin: metrics.defaultMargin}]}>Fill out your personal details to confirm order</Text>
-              <View style={{paddingHorizontal:metrics.defaultMargin}}>
-                <Input
-                  required
-
-                  handleBlur={ () => this.onBlur('fname') }
-                  handleFocus={ () => this.onFocus('fname') }
-                  inputStyle={{ 
-                    borderColor: this.state.fname.borderColor, borderWidth:1,
-                    borderRadius:3,
-                    // shadowColor: this.state.shadow,
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 1,
-                    // },
-                    // shadowOpacity: 0.20,
-                    // shadowRadius: 1.41,
-                    // elevation: 2,
-                    // color:colors.grey
-                  }} 
-
-                  placeholder="First Name"
-                  // label="First name"
-                  textValue={this.state.fname.value}
-                  returnKeyType="next"
-                  onRef={(ref) => {
-                    this.inputs['fname'] = ref;
-                  }}
-                  onChangeText={(text) => {
-                    this.onChange('fname', text);
-                  }}
-                  onSubmitEditing={() => {
-                    this.focusNextField('lname');
-                  }}
-                />
-                <Input
-                  required
-
-                  handleBlur={ () => this.onBlur('lname') }
-                  handleFocus={ () => this.onFocus('lname') }
-                  inputStyle={{ 
-                    borderColor: this.state.lname.borderColor, borderWidth:1,
-                    borderRadius:3,
-                    // shadowColor: this.state.shadow,
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 1,
-                    // },
-                    // shadowOpacity: 0.20,
-                    // shadowRadius: 1.41,
-                    // elevation: 2,
-                    // color:colors.grey
-                  }} 
-
-                  placeholder="Last Name"
-                  // label="Last name"
-                  textValue={this.state.lname}
-                  returnKeyType="next"
-                  onRef={(ref) => {
-                    this.inputs['lname'] = ref;
-                  }}
-                  onChangeText={(text) => {
-                    this.onChange('lname', text);
-                  }}
-                  onSubmitEditing={() => {
-                    this.focusNextField('email');
-                  }}
-                />
-                <Input
-                  required
-
-                  handleBlur={ () => this.onBlur('email') }
-                  handleFocus={ () => this.onFocus('email') }
-                  inputStyle={{ 
-                    borderColor: this.state.email.borderColor, borderWidth:1,
-                    borderRadius:3,
-                    // shadowColor: this.state.shadow,
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 1,
-                    // },
-                    // shadowOpacity: 0.20,
-                    // shadowRadius: 1.41,
-                    // elevation: 2,
-                    // color:colors.grey
-                  }} 
-
-                  placeholder="Email"
-                  // label="Email"
-                  keyboardType={'email-address'}
-                  textValue={this.state.email.value}
-                  returnKeyType="next"
-                  onRef={(ref) => {
-                    this.inputs['email'] = ref;
-                  }}
-                  onChangeText={(text) => {
-                    this.onChange('email', text);
-                  }}
-                  onSubmitEditing={() => {
-                    this.focusNextField('phoneNumber');
-                  }}
-                />
-                <Input
-                  required
-
-                  handleBlur={ () => this.onBlur('phoneNumber') }
-                  handleFocus={ () => this.onFocus('phoneNumber') }
-                  inputStyle={{ 
-                    borderColor: this.state.phoneNumber.borderColor, borderWidth:1,
-                    borderRadius:3,
-                    // shadowColor: this.state.shadow,
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 1,
-                    // },
-                    // shadowOpacity: 0.20,
-                    // shadowRadius: 1.41,
-                    // elevation: 2,
-                    // color:colors.grey
-                  }} 
-
-                  placeholder="Mobile Number"
-                  // label="Mobile No."
-                  textValue={this.state.phoneNumber.value}
-                  returnKeyType="next"
-                  onRef={(ref) => {
-                    this.inputs['phoneNumber'] = ref;
-                  }}
-                  onChangeText={(text) => {
-                    this.onChange('phoneNumber', text);
-                  }}
-                  keyboardType={'phone-pad'}
-                  onSubmitEditing={() => {
-                    this.focusNextField('address');
-                  }}
-                />
-                <Input
-                  required
-
-                  handleBlur={ () => this.onBlur('address') }
-                  handleFocus={ () => this.onFocus('address') }
-                  inputStyle={{ 
-                    borderColor: this.state.address.borderColor, borderWidth:1,
-                    borderRadius:3,
-                    // shadowColor: this.state.shadow,
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 1,
-                    // },
-                    // shadowOpacity: 0.20,
-                    // shadowRadius: 1.41,
-                    // elevation: 2,
-                    // color:colors.grey,
-                    height: 100
-                  }} 
-
-                  placeholder="Address"
-                  // label="Address"
-                  textValue={this.state.address.value}
-                  onRef={(ref) => {
-                    this.inputs['address'] = ref;
-                  }}
-                  onChangeText={(text) => {
-                    this.onChange('address', text);
-                  }}
-                  multiline={true}
-                  // inputStyle={{height: 100}}
-                />
-
-              </View>
-              <View style={styles.info}>
-                <Text style={styles.title}>Payment Mode</Text>
-                <Text style={styles.text}>Payment on Delivery</Text>
-              </View>
-              <View style={styles.info}>
-                <Text style={styles.title}>Total Price</Text>
-                <Text style={[styles.text, {fontWeight:'bold'}]}>
-                  $ {parseInt(this.props.cart.totalPrice) * this.state.quantity}
-                </Text>
-              </View>
-              <View style={{flexDirection:'row', margin: metrics.defaultMargin, borderRadius:3}}>
-                  {this.state.loading ? (
-                    <View style={[styles.btn,{backgroundColor:colors.primary}]}>
-                        <BarIndicator color="white" size={28} />
-                    </View>
-                    ) : (
-                      <>
-                        <TouchableWithoutFeedback
-                          onPress={() =>
-                            Navigator.navigate('Home')
-                          }>
-                          <View style={[styles.btn,{backgroundColor:'white'}]}>
-                              <Text style={[styles.btnText,{color:colors.primary}]}>Cancel</Text>
-                            </View>
-                          </TouchableWithoutFeedback>
-                          <TouchableWithoutFeedback
-                          onPress={() => {
-                            this.onButtonPress();
-                          }}>
-                          <View style={[styles.btn,{backgroundColor:colors.primary}]}>
-                            <Text style={[styles.btnText,{color:'white'}]} >Order</Text>
-                          </View>
-                          </TouchableWithoutFeedback>
-                      </>
-                    )}
+              
+            </KeyboardAwareScrollView>
+            <View style={{flexDirection:'row', margin: metrics.defaultMargin, borderRadius:3}}>
+                        
+                <TouchableWithoutFeedback
+                 onPress={() =>
+                  Navigator.navigate('Home')
+                }>
+                <View style={[styles.btn,{backgroundColor:colors.primary}]}>
+                  <Text style={[styles.btnText,{color:'white'}]} >Add More!</Text>
+                </View>
+                </TouchableWithoutFeedback>
                 
               </View>
-              </View>
-            </KeyboardAwareScrollView>
             {/* <SafeAreaInsetsContext.Consumer>
               {(insets) => (
                 <TouchableWithoutFeedback
@@ -468,6 +261,7 @@ const styles = StyleSheet.create({
   },
   btn:{
     flex:1,
+    borderRadius:10,
     backgroundColor:'red',
     marginTop:metrics.defaultMargin,
     shadowColor: "#000",

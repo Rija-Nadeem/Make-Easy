@@ -15,7 +15,7 @@ function SearchScreen(props) {
   const [searchQueryText, setsearchQueryText] = useState('');
 
   useEffect(() => {
-    var updated_list = data.items.filter((val) =>
+    var updated_list = props.products.filter((val) =>
       val.name.toLowerCase().includes(searchQueryText.toLowerCase()),
     );
     setlist(updated_list);
@@ -34,7 +34,7 @@ function SearchScreen(props) {
       <FlatList
         showsVerticalScrollIndicator={false}
         horizontal={false}
-        numColumns={2}
+       
         bounces={false}
         data={list}
         style={{padding: metrics.defaultMargin}}
@@ -42,7 +42,7 @@ function SearchScreen(props) {
         renderItem={({item}) => (
           <ItemCard
             item={item}
-            style={{marginBottom: metrics.defaultMargin, width: '100%'}}
+            style={{marginBottom: metrics.defaultMargin, width: metrics.width * 0.84, marginHorizontal: metrics.smallMargin}}
           />
         )}
       />

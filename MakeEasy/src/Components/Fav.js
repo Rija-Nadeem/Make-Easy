@@ -24,17 +24,28 @@ class Fav extends Component {
           alignItems: 'center',
           justifyContent: 'center',
           alignSelf:'flex-end',
-          marginHorizontal:20,
+          // marginHorizontal:20,
           position:'absolute',
           ...this.props.style,
         }}>
-        <Icon
-          name={'heart'}
-          style={{
-            fontSize: 22,
-            color: this.props.isFav ? colors.primary : 'black',
-          }}
+          {
+            this.props.isFav?
+            <Icon
+              name={'heart'}
+              style={{
+                fontSize: 22,
+                color: colors.primary,
+              }}
+            />
+              :
+              <Icon
+              name={'heart-outline'}
+              style={{
+                fontSize: 22,
+                color: colors.primary,
+              }}
         />
+          }
       </TouchableOpacity>
     );
   }
