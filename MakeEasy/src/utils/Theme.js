@@ -25,19 +25,19 @@ export const metrics = {
 
 export const fonts = {
   primary: Platform.select({
-    android:'Roboto-Regular',
-    ios:'Roboto-Regular'
+    android:'',
+    ios:''
   }),
   primaryBold: Platform.select({
-    android:'Roboto-Black',
-    ios:'Roboto-Black'
+    android:'',
+    ios:''
   }),
   secondary: Platform.select({
-    android:'Roboto-Thin',
-    ios:'Roboto-Thin'
+    android:'',
+    ios:''
   }),
   secondaryBold: Platform.select({
-    android:'Roboto-Light',
-    ios:'Roboto-Light'
+    android:'',
+    ios:''
   }),
 }
