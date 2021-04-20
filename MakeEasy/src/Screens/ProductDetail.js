@@ -67,7 +67,7 @@ class ProductDetail extends Component {
     // console.log('ingredianes', ingredients, id)
 
     return (
-      <Wrapper top={0} bottom={0} style={{backgroundColor: bgcolor}}>
+      <Wrapper bottom={0} style={{backgroundColor: bgcolor}}>
         <ScrollView
           style={{ flex: 1 }}
           bounces={false}
